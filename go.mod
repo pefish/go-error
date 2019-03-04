@@ -1,3 +1,3 @@
-module gitee.com/pefish/p-go-error
+module github.com/pefish/go-error
 
-require gitee.com/pefish/p-go-logger v0.0.0-20190207113114-334ba98ccbd5
+require github.com/pefish/go-logger v0.0.1

@@ -2,7 +2,7 @@ package p_error
 
 import (
 	"fmt"
-	"gitee.com/pefish/p-go-logger"
+	"github.com/pefish/go-logger"
 )
 
 type ErrorInfo struct {
