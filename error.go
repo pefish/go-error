@@ -14,6 +14,8 @@ type ErrorInfo struct {
 
 var (
 	INTERNAL_ERROR = `internal error`
+
+	CODE_ERROR uint64 = 0
 )
 
 func (e *ErrorInfo) Error() string {
