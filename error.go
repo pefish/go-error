@@ -12,6 +12,10 @@ type ErrorInfo struct {
 	Err error
 }
 
+var (
+	INTERNAL_ERROR = `internal error`
+)
+
 func (e *ErrorInfo) Error() string {
 	return e.ErrorMessage
 }
