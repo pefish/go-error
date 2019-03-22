@@ -29,6 +29,12 @@ func ThrowInternal(text string) {
 	panic(errorInfo_)
 }
 
+func ThrowInternalError(text string, err error) {
+	var errorInfo_ = ErrorInfo{text, 0, nil,err}
+	p_logger.Logger.Error(fmt.Sprintf(`ERROR: %v`, errorInfo_))
+	panic(errorInfo_)
+}
+
 func Throw(text string, code uint64) {
 	var errorInfo_ = ErrorInfo{text, code, nil,nil}
 	p_logger.Logger.Error(fmt.Sprintf(`ERROR: %v`, errorInfo_))
