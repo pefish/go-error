@@ -7,6 +7,12 @@ type ErrorInfo struct {
 	Err error
 }
 
+// 供外部使用
+var (
+	INTERNAL_ERROR = `internal error`
+	INTERNAL_ERROR_CODE uint64 = 1
+)
+
 
 func (e *ErrorInfo) Error() string {
 	return e.ErrorMessage
