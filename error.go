@@ -20,12 +20,12 @@ func (e *ErrorInfo) Error() string {
 
 
 func ThrowInternal(text string) {
-	var errorInfo_ = ErrorInfo{text, 1, nil,nil}
+	var errorInfo_ = ErrorInfo{text, INTERNAL_ERROR_CODE, nil,nil}
 	panic(errorInfo_)
 }
 
 func ThrowInternalError(text string, err error) {
-	var errorInfo_ = ErrorInfo{text, 1, nil,err}
+	var errorInfo_ = ErrorInfo{text, INTERNAL_ERROR_CODE, nil,err}
 	panic(errorInfo_)
 }
 
