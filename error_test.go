@@ -1,4 +1,4 @@
-package p_error
+package go_error
 
 import (
 	"fmt"
