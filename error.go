@@ -18,6 +18,22 @@ func (e *ErrorInfo) Error() string {
 	return e.ErrorMessage
 }
 
+func Recover(fun func(msg string, code uint64, data interface{}, err interface{})) {
+	if err := recover(); err != nil {
+		if _, ok := err.(ErrorInfo); !ok {
+			msg := ``
+			if _, ok := err.(error); !ok {
+				msg = err.(string)
+			} else {
+				msg = err.(error).Error()
+			}
+			fun(msg, 0, nil, err)
+		} else {
+			errorInfoStruct := err.(ErrorInfo)
+			fun(errorInfoStruct.ErrorMessage, errorInfoStruct.ErrorCode, errorInfoStruct.Data, err)
+		}
+	}
+}
 
 func ThrowInternal(text string) {
 	var errorInfo_ = ErrorInfo{text, INTERNAL_ERROR_CODE, nil,nil}
