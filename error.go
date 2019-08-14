@@ -27,7 +27,7 @@ func Recover(fun func(msg string, code uint64, data interface{}, err interface{}
 			} else {
 				msg = err.(error).Error()
 			}
-			fun(msg, 0, nil, err)
+			fun(msg, INTERNAL_ERROR_CODE, nil, err)
 		} else {
 			errorInfoStruct := err.(ErrorInfo)
 			fun(errorInfoStruct.ErrorMessage, errorInfoStruct.ErrorCode, errorInfoStruct.Data, err)
