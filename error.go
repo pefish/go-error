@@ -5,7 +5,7 @@ type ErrorInfo struct {
 	ErrorMessage         string // 用户也可以看到的消息，不可以带敏感信息
 	ErrorCode            uint64
 	Data                 interface{}
-	Err                  error
+	Err                  interface{}
 }
 
 // 供外部使用
@@ -45,12 +45,12 @@ func ThrowInternal(text string) {
 	panic(errorInfo_)
 }
 
-func ThrowInternalError(text string, err error) {
+func ThrowInternalError(text string, err interface{}) {
 	var errorInfo_ = ErrorInfo{text, text, INTERNAL_ERROR_CODE, nil, err}
 	panic(errorInfo_)
 }
 
-func ThrowInternalErrorWithInternalMsg(msg string, internalMsg string, err error) {
+func ThrowInternalErrorWithInternalMsg(msg string, internalMsg string, err interface{}) {
 	var errorInfo_ = ErrorInfo{internalMsg, msg, INTERNAL_ERROR_CODE, nil, err}
 	panic(errorInfo_)
 }
@@ -75,22 +75,22 @@ func ThrowWithDataInternalMsg(msg string, internalMsg string, code uint64, data 
 	panic(errorInfo_)
 }
 
-func ThrowError(text string, code uint64, err error) {
+func ThrowError(text string, code uint64, err interface{}) {
 	var errorInfo_ = ErrorInfo{text, text, code, nil, err}
 	panic(errorInfo_)
 }
 
-func ThrowErrorWithInternalMsg(msg string, internalMsg string, code uint64, err error) {
+func ThrowErrorWithInternalMsg(msg string, internalMsg string, code uint64, err interface{}) {
 	var errorInfo_ = ErrorInfo{internalMsg, msg, code, nil, err}
 	panic(errorInfo_)
 }
 
-func ThrowErrorWithData(text string, code uint64, data interface{}, err error) {
+func ThrowErrorWithData(text string, code uint64, data interface{}, err interface{}) {
 	var errorInfo_ = ErrorInfo{text, text, code, data, err}
 	panic(errorInfo_)
 }
 
-func ThrowErrorWithDataInternalMsg(msg string, internalMsg string, code uint64, data interface{}, err error) {
+func ThrowErrorWithDataInternalMsg(msg string, internalMsg string, code uint64, data interface{}, err interface{}) {
 	var errorInfo_ = ErrorInfo{internalMsg, msg, code, data, err}
 	panic(errorInfo_)
 }
