@@ -20,14 +20,14 @@ func (this *ErrorInfo) Error() string {
 	return fmt.Sprintf(`internal_msg: %s, msg: %s`, this.InternalErrorMessage, this.ErrorMessage)
 }
 
-func Recover(fun func(msg string, internalMsg string, code uint64, data interface{}, err interface{})) {
+func Recover(fun func(msg string, internalMsg string, code uint64, data interface{})) {
 	if err := recover(); err != nil {
 		if _, ok := err.(*ErrorInfo); !ok {
 			msg := fmt.Sprint(err)
-			fun(msg, msg, INTERNAL_ERROR_CODE, nil, err)
+			fun(``, msg, INTERNAL_ERROR_CODE, nil)
 		} else {
 			errorInfoStruct := err.(*ErrorInfo)
-			fun(errorInfoStruct.ErrorMessage, errorInfoStruct.InternalErrorMessage, errorInfoStruct.ErrorCode, errorInfoStruct.Data, err)
+			fun(errorInfoStruct.ErrorMessage, errorInfoStruct.InternalErrorMessage, errorInfoStruct.ErrorCode, errorInfoStruct.Data)
 		}
 	}
 }
