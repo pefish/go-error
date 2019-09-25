@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	defer go_error.Recover(func(msg string, code uint64, data interface{}, err interface{}) {
-		fmt.Println(msg, code, data, err)
+	defer go_error.Recover(func(msg string, internalMsg string, code uint64, data interface{}, err interface{}) {
+		fmt.Println(msg, internalMsg, code, data, err)
 	})
 
 	go_error.ThrowErrorWithData(`test`, 12, map[string]interface{}{
