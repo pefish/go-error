@@ -11,7 +11,11 @@ func main() {
 		fmt.Println(msg, internalMsg, code, data)
 		fmt.Println(fmt.Sprint(err))
 	})
-
+	fmt.Printf("%s\n", &go_error.ErrorInfo{
+		ErrorCode:    go_error.INTERNAL_ERROR_CODE,
+		ErrorMessage: `post error`,
+		Err: errors.New(`haha`),
+	})
 	go_error.ThrowError(`haha`, 1000, errors.New(`hehe`))
 	//go_error.ThrowErrorWithData(`test`, 12, map[string]interface{}{
 	//	`a`: 1,

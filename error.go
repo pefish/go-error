@@ -16,8 +16,12 @@ var (
 	INTERNAL_ERROR_CODE uint64 = 1
 )
 
+func (this *ErrorInfo) String() string {
+	return fmt.Sprintf(`ErrorInfo -> internal_msg: %s, msg: %s, error_code: %d, data: %#v, err: %#v`, this.InternalErrorMessage, this.ErrorMessage, this.ErrorCode, this.Data, this.Err)
+}
+
 func (this *ErrorInfo) Error() string {
-	return fmt.Sprintf(`internal_msg: %s, msg: %s`, this.InternalErrorMessage, this.ErrorMessage)
+	return this.String()
 }
 
 func Recover(fun func(msg string, internalMsg string, code uint64, data interface{}, err interface{})) {
