@@ -68,3 +68,7 @@ func WrapWithErr(err error) *ErrorInfo {
 func Wrap(err error) *ErrorInfo {
 	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
 }
+
+func WrapWithCode(err error, code uint64) *ErrorInfo {
+	return &ErrorInfo{code, nil, err}
+}
