@@ -6,10 +6,9 @@ import (
 )
 
 type ErrorInfo struct {
-	Msg  string      `json:"msg"`
 	Code uint64      `json:"code"`
 	Data interface{} `json:"data"`
-	Err  error       `json:"err,omitempty"`
+	Err  error       `json:"err"`
 }
 
 // 供外部使用
@@ -19,7 +18,7 @@ var (
 )
 
 func (ei *ErrorInfo) String() string {
-	return fmt.Sprintf(`ErrorInfo -> msg: %s, code: %d, data: %#v, err: %#v`, ei.Msg, ei.Code, ei.Data, ei.Err)
+	return fmt.Sprintf(`ErrorInfo -> msg: %s, code: %d, data: %#v, err: %#v`, ei.Err.Error(), ei.Code, ei.Data, ei.Err)
 }
 
 func (ei *ErrorInfo) Error() string {
@@ -36,46 +35,36 @@ func Recover(fun func(*ErrorInfo)) {
 		case *ErrorInfo:
 			fun(e)
 		case error:
-			fun(WrapWithAll(e.Error(), INTERNAL_ERROR_CODE, nil, e))
+			fun(WrapWithAll(e, INTERNAL_ERROR_CODE, nil))
 		default:
-			msg := fmt.Sprint(err)
-			fun(WrapWithAll(msg, INTERNAL_ERROR_CODE, nil, errors.New(msg)))
+			fun(WrapWithAll(errors.New(fmt.Sprint(err)), INTERNAL_ERROR_CODE, nil))
 		}
 	}
 }
 
-func ThrowInternal(text string) {
-	var errorInfo_ = ErrorInfo{text, INTERNAL_ERROR_CODE, nil, nil}
+func ThrowInternal(err error) {
+	var errorInfo_ = ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
 	panic(&errorInfo_)
 }
 
-func ThrowInternalWithError(text string, err error) {
-	panic(WrapWithErr(text, err))
-}
-
-func ThrowWithCode(text string, code uint64) {
-	var errorInfo_ = ErrorInfo{text, code, nil, nil}
+func ThrowWithCode(err error, code uint64) {
+	var errorInfo_ = ErrorInfo{code, nil, err}
 	panic(&errorInfo_)
 }
 
-func ThrowWithCodeAndData(text string, code uint64, data error) {
-	var errorInfo_ = ErrorInfo{text, code, data, nil}
+func ThrowWithCodeAndData(err error, code uint64, data error) {
+	var errorInfo_ = ErrorInfo{code, data, err}
 	panic(&errorInfo_)
 }
 
-func ThrowWithCodeAndErr(text string, code uint64, err error) {
-	var errorInfo_ = ErrorInfo{text, code, nil, err}
-	panic(&errorInfo_)
+func WrapWithAll(err error, code uint64, data interface{}) *ErrorInfo {
+	return &ErrorInfo{code, data, err}
 }
 
-func ThrowWithAll(text string, code uint64, data interface{}, err error) {
-	panic(WrapWithAll(text, code, data, err))
+func WrapWithErr(err error) *ErrorInfo {
+	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
 }
 
-func WrapWithAll(text string, code uint64, data interface{}, err error) *ErrorInfo {
-	return &ErrorInfo{text, code, data, err}
-}
-
-func WrapWithErr(text string, err error) *ErrorInfo {
-	return &ErrorInfo{text, INTERNAL_ERROR_CODE, nil, err}
+func Wrap(err error) *ErrorInfo {
+	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
 }
