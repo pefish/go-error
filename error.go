@@ -1,8 +1,8 @@
 package go_error
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 )
 
 type ErrorInfo struct {
