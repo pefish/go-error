@@ -18,7 +18,7 @@ var (
 )
 
 func (ei *ErrorInfo) String() string {
-	return fmt.Sprintf(`ErrorInfo -> msg: %s, code: %d, data: %#v, err: %#v`, ei.Err.Error(), ei.Code, ei.Data, ei.Err)
+	return fmt.Sprintf(`ErrorInfo -> msg: %s, code: %d, data: %#v, err: %+v`, ei.Err.Error(), ei.Code, ei.Data, ei.Err)
 }
 
 func (ei *ErrorInfo) Error() string {
@@ -42,33 +42,42 @@ func Recover(fun func(*ErrorInfo)) {
 	}
 }
 
+func WithStack(err error) error {
+	if _, ok := err.(interface{
+		WithStack(err error) error
+	}); !ok {  // 如果是不带堆栈的err，则附加上堆栈
+		return errors.WithStack(err)
+	}
+	return err
+}
+
 func ThrowInternal(err error) {
-	var errorInfo_ = ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
+	var errorInfo_ = ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(err)}
 	panic(&errorInfo_)
 }
 
 func ThrowWithCode(err error, code uint64) {
-	var errorInfo_ = ErrorInfo{code, nil, err}
+	var errorInfo_ = ErrorInfo{code, nil, WithStack(err)}
 	panic(&errorInfo_)
 }
 
 func ThrowWithCodeAndData(err error, code uint64, data error) {
-	var errorInfo_ = ErrorInfo{code, data, err}
+	var errorInfo_ = ErrorInfo{code, data, WithStack(err)}
 	panic(&errorInfo_)
 }
 
 func WrapWithAll(err error, code uint64, data interface{}) *ErrorInfo {
-	return &ErrorInfo{code, data, err}
+	return &ErrorInfo{code, data, WithStack(err)}
 }
 
 func WrapWithErr(err error) *ErrorInfo {
-	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
+	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(err)}
 }
 
 func Wrap(err error) *ErrorInfo {
-	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, err}
+	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(err)}
 }
 
 func WrapWithCode(err error, code uint64) *ErrorInfo {
-	return &ErrorInfo{code, nil, err}
+	return &ErrorInfo{code, nil, WithStack(err)}
 }
