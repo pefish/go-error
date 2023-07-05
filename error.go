@@ -11,10 +11,12 @@ type ErrorInfo struct {
 	Err  error       `json:"err"`
 }
 
-// 供外部使用
 var (
-	INTERNAL_ERROR             = `internal error`
 	INTERNAL_ERROR_CODE uint64 = 1
+	NETWORK_ERROR_CODE  uint64 = 2
+
+	INTERNAL_ERROR = WrapWithCode(fmt.Errorf("Internal error."), INTERNAL_ERROR_CODE)
+	NETWORK_ERROR  = WrapWithCode(fmt.Errorf("Network error."), NETWORK_ERROR_CODE)
 )
 
 func (ei *ErrorInfo) String() string {
@@ -43,9 +45,9 @@ func Recover(fun func(*ErrorInfo)) {
 }
 
 func WithStack(err error) error {
-	if _, ok := err.(interface{
+	if _, ok := err.(interface {
 		WithStack(err error) error
-	}); !ok {  // 如果是不带堆栈的err，则附加上堆栈
+	}); !ok { // 如果是不带堆栈的err，则附加上堆栈
 		return errors.WithStack(err)
 	}
 	return err
