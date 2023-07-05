@@ -12,11 +12,13 @@ type ErrorInfo struct {
 }
 
 var (
+	INTERNAL_ERROR_MSG         = "Internal error."
 	INTERNAL_ERROR_CODE uint64 = 1
+	NETWORK_ERROR_MSG          = "Network error."
 	NETWORK_ERROR_CODE  uint64 = 2
 
-	INTERNAL_ERROR = WrapWithCode(fmt.Errorf("Internal error."), INTERNAL_ERROR_CODE)
-	NETWORK_ERROR  = WrapWithCode(fmt.Errorf("Network error."), NETWORK_ERROR_CODE)
+	INTERNAL_ERROR = WrapWithCode(fmt.Errorf(INTERNAL_ERROR_MSG), INTERNAL_ERROR_CODE)
+	NETWORK_ERROR  = WrapWithCode(fmt.Errorf(NETWORK_ERROR_MSG), NETWORK_ERROR_CODE)
 )
 
 func (ei *ErrorInfo) String() string {
