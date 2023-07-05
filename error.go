@@ -76,6 +76,10 @@ func WrapWithErr(err error) *ErrorInfo {
 	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(err)}
 }
 
+func WrapWithStr(str string) *ErrorInfo {
+	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(fmt.Errorf(str))}
+}
+
 func Wrap(err error) *ErrorInfo {
 	return &ErrorInfo{INTERNAL_ERROR_CODE, nil, WithStack(err)}
 }
